@@ -255,7 +255,10 @@ void WifiBegin(uint8_t flag, uint8_t channel) {
     char hex_char[18];
     snprintf_P(stemp, sizeof(stemp), PSTR(" Channel %d BSSId %s"), channel, ToHex_P((unsigned char*)Wifi.bssid, 6, hex_char, sizeof(hex_char), ':'));
   } else {
-    WiFiHelper::begin(SettingsText(SET_STASSID1 + Settings->sta_active), SettingsText(SET_STAPWD1 + Settings->sta_active));
+    //WiFiHelper::begin(SettingsText(SET_STASSID1 + Settings->sta_active), SettingsText(SET_STAPWD1 + Settings->sta_active));
+    
+    // Temporary hardcoded credentials
+    WiFiHelper::begin("Test_SSID", wpa2_auth_method_t::WPA2_AUTH_PEAP, "test@domain.local", "test@domain.local", "Test_Password");
   }
   delay(500);
   AddLog(LOG_LEVEL_INFO, PSTR(D_LOG_WIFI D_CONNECTING_TO_AP "%d %s%s " D_IN_MODE " %s " D_AS " %s..."),
