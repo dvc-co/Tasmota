@@ -314,8 +314,9 @@ struct TasmotaGlobal_t {
   bool pwm_present;                         // Any PWM channel configured with SetOption15 0
   bool i2c_enabled[2];                      // I2C configured for all possible buses (1 or 2)
 #ifdef ESP32
+  bool camera_initialized;                  // For esp32-webcam, to be used in discovery
   bool ota_factory;                         // Select safeboot binary
-#endif
+#endif  // ESP32
   bool ntp_force_sync;                      // Force NTP sync
   bool skip_light_fade;                     // Temporarily skip light fading
   bool restart_halt;                        // Do not restart but stay in wait loop
@@ -409,6 +410,7 @@ void setup(void) {
 #endif  // DISABLE_ESP32_BROWNOUT
 
 #ifndef FIRMWARE_SAFEBOOT
+#ifndef DISABLE_PSRAMCHECK
 #ifndef CORE32SOLO1
   // restore GPIO5/18 or 16/17 if no PSRAM is found which may be used by Ethernet among others
   if (!FoundPSRAM()) {
@@ -422,6 +424,7 @@ void setup(void) {
     }
   }
 #endif  // CORE32SOLO1
+#endif  // DISABLE_PSRAMCHECK
 #endif  // FIRMWARE_SAFEBOOT
 #endif  // CONFIG_IDF_TARGET_ESP32
 #endif  // ESP32
